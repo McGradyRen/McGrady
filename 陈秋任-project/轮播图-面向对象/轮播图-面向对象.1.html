@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+        <style>
+        * {
+			margin:0; 
+			padding:0; }
+        li{
+			list-style:none;
+			 }
+        #div {
+            width:850px; 
+            height:500px; 
+            margin:50px auto;
+            overflow:hidden; 
+            position:relative;
+			}
+		#div ul{
+		    width: 4250px;
+		    position: absolute;
+		    left: 0;
+		    top: 0;
+		    transition: .5s;
+		}    
+        #div ul li{
+            height:500px;
+            float: left;
+            }
+        #div ol {
+            position:absolute;
+            right: 10%;
+            bottom: 10px;
+            }
+        #div ol li{
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            margin-left: 5px;
+            float: left;
+            line-height: 20px;
+            text-align: center;
+            cursor: pointer;
+			}
+        #div ol li.ac{
+            background: red;
+            color: #fff;
+			}
+        #goLeft,#goRight{
+            text-decoration: none;
+            position: absolute;
+            top: 50%;
+            margin-top: -10px;
+            height: 40px;
+            line-height: 32px;
+            text-align: center;
+            width: 40px;
+            font-size: 40px;
+            vertical-align: middle;
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+           }
+        #goLeft{
+			left: 0;
+			}
+        #goRight{
+			right: 0;
+			}
+        img{
+            width:850px;
+            height:500px;}
+        </style>
+	</head>
+	<body>
+        <div id="div">
+        	<ul>
+            	<li class="ac"><a href="#"><img src="1.jpg" /></a></li>
+            	<li><a href="#"><img src="2.jpg" /></a></li>
+            	<li><a href="#"><img src="3.jpg" /></a></li>
+            	<li><a href="#"><img src="4.jpg" /></a></li>
+            	<li><a href="#"><img src="5.jpg" /></a></li>
+            </ul>
+            <ol>
+            	<li class="ac">1</li>
+            	<li>2</li>
+            	<li>3</li>
+            	<li>4</li>
+            	<li>5</li>
+            </ol>
+            <a href="javascript:;" id="goLeft">&laquo;</a> 
+            <a href="javascript:;" id="goRight">&raquo;</a>
+        </div>
+        <script type="text/javascript">
+        	function Fn(selector){
+                this.container = document.querySelector(selector);
+                this.init();
+            }
+            Fn.prototype.init = function(){
+					this.ul = this.container.querySelector("ul");
+                	this.imgs =  this.container.querySelector("ul").children,
+                    //console.log(this.imgs);
+                	this.btns =  this.container.querySelector("ol").children,
+                    //console.log(this.btns);
+                	this.goLeft = this.container.querySelector("#goLeft"),
+                    //console.log(this.goLeft);
+                	this.goRight = this.container.querySelector("#goRight");
+                   //console.log(this.goRight);
+                    this.bindEvents();
+                    this.timer;                   
+            }
+            var index = 0;
+            var lastIndex = 0;
+            Fn.prototype.bindEvents = function(){
+                let _this = this;
+                Array.from(_this.btns).forEach(function (btn,i){
+                	btn.onclick = function(){
+                		index = i;
+                		_this.changeImg(i);
+                	}
+
+                }) 
+                this.goRight.onclick = function(){
+                	index++;
+                	if(index === _this.btns.length) index = 0;
+                	_this.changeImg(index);
+                } 
+                this.goLeft.onclick = function(){
+                	index--;
+                	if(index < 0) index = _this.btns.length-1;
+                	_this.changeImg(index);
+                }	
+				this.autoplay();
+            }
+			Fn.prototype.autoplay = function(){
+				let _this = this;
+				 _this.timer = setInterval(function(){
+                    this.goRight.onclick();
+				},3000); 
+				_this.container.onmouseenter = function(){
+					clearInterval(_this.timer);
+				}
+				_this.container.onmouseleave = function(){
+					_this.autoplay();
+				}
+			}
+				
+            Fn.prototype.changeImg = function (index){
+                console.log(index,lastIndex);
+                this.btns[lastIndex].classList.remove("ac");
+                this.imgs[lastIndex].classList.remove("ac");
+                this.btns[index].classList.add("ac");
+                this.imgs[index].classList.add("ac");
+                lastIndex = index;
+				this.ul.style.left = -850 * index + "px";
+            } 
+           
+            new Fn("#div");
+        </script>
+	</body>
+</html>
