@@ -10,6 +10,7 @@ const navs = adminRoutes.filter(route => route.isNav === true)
 class Frame extends Component {
 
     clickHandler = ({key}) => {
+        // 编程式导航
        this.props.history.push(key) 
     }
     render() {
@@ -24,7 +25,7 @@ class Frame extends Component {
                 <Sider width={200} style={{ background: '#fff' }}>
                     <Menu
                     mode="inline"
-                    defaultSelectedKeys={[navs[0].path]}
+                    defaultSelectedKeys={[this.props.location.pathname]}
                     style={{ height: '100%', borderRight: 0 }}
                     onClick= {this.clickHandler}
                     >

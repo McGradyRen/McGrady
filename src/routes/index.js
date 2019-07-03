@@ -3,9 +3,11 @@ import {
     Article,
     DashBoard,
     Settings,
-    NotFound
+    NotFound,
+    ArticleEdit
 
 } from '../views'
+import { exact } from 'prop-types';
 
 // 不需要权限的路由路径
 export const mainRoutes = [
@@ -34,7 +36,12 @@ export const adminRoutes = [
         component: Article,
         isNav: true,
         title: '文章管理',
-        icon: 'unordered-list'
+        icon: 'unordered-list',
+        exact: true
+    },
+    {
+        path: '/admin/article/edit/:id',
+        component: ArticleEdit,
     },
     {
         path: '/admin/settings',
